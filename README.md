@@ -1,15 +1,15 @@
-# Stopwatch (Basys3 FPGA)
+# Programmable Stopwatch/Timer
 
-A Verilog implementation of a four-mode programmable stopwatch/timer, driven
-by the four 7-segment displays on a Digilent Basys3 FPGA board.
+RTL implementation of a four-mode programmable stopwatch/timer on the
+Digilent Basys3 FPGA board.
 
 ## Overview
 
-Time is shown across the board's four 7-segment digits: the two most
-significant digits are seconds, the two least significant are hundredths of
-a second (rolling over 00–99 once per second). A `startstop` button and a
-`reset` button, together with `sw[9:0]`, control the mode, preset value, and
-run/pause state.
+Time is displayed on the board's four 7-segment digits: the two
+most-significant digits show seconds, and the two least-significant digits
+show hundredths of a second (10 ms resolution, cycling 00–99 once per
+second). Two buttons (`startstop`, `reset`) and ten switches (`sw[9:0]`)
+control mode selection, preset values, and run state.
 
 ## Modes (`sw_mode` = `sw[1:0]`)
 
