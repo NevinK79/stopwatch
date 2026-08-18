@@ -57,6 +57,21 @@ Combinational BCD-to-7-segment decoder. Takes a 4-bit BCD digit plus a
 `decimal` bit and produces the 8-bit `sseg` pattern for the digit currently
 selected by the FSM.
 
+### `main.v`
+Top-level module. Instantiates `clkDiv` and `stopWatchFSM`, wiring
+`clk_10ms`/`clk_1ms` between them and splitting the board's `sw[9:0]` input
+as `sw[1:0]` → `sw_mode`, `sw[5:2]` → `inOnes`, `sw[9:6]` → `inTens`. This is
+the module to set as top in Vivado when building a bitstream.
+
+| Port | Direction | Description |
+|------|-----------|--------------|
+| `clk` | in | 100 MHz board clock |
+| `reset` | in | Loads the mode's starting value |
+| `startstop` | in | Toggles run/pause on each press |
+| `sw[9:0]` | in | Mode select, preset tens, and preset ones digits |
+| `sseg[7:0]` | out | 7-segment cathodes + decimal point |
+| `an[3:0]` | out | Active-low, one-hot digit enable |
+
 ## Display multiplexing
 
 The board has a single shared set of 7-segment lines driving all four
@@ -74,19 +89,18 @@ official Basys3 master XDC.
 
 ## Building for hardware
 
-This repo currently contains the individual RTL modules and the pin
-constraints, but no top-level module wiring `clkDiv` into `stopWatchFSM` (and
-splitting `sw[9:0]` into `sw_mode`/`inTens`/`inOnes`) yet. To build a
-bitstream:
+### Option 1: Program the prebuilt bitstream
+`main.bit` is a prebuilt bitstream for the Basys3. Open Vivado's Hardware
+Manager, connect to the board, and program the device directly with this
+file — no synthesis required.
 
-1. Add a top-level module that instantiates `clkDiv` and `stopWatchFSM`,
-   connecting `clk_10ms`/`clk_1ms` between them and mapping `sw[1:0]` →
-   `sw_mode`, `sw[5:2]` → `inTens`, `sw[9:6]` → `inOnes` (or your preferred
-   switch layout).
-2. In Vivado, add all `.v` sources plus `stopWatch_cstr.xdc`.
-3. Run Synthesis → Implementation → Generate Bitstream.
-4. Program the Basys3 via Hardware Manager.
-5. Set the mode switches, press `reset`, then `startstop` to run.
+### Option 2: Build from source
+1. In Vivado, add all `.v` sources (`clkDiv.v`, `hexto7segment.v`,
+   `stopWatchFSM.v`, `main.v`) plus `stopWatch_cstr.xdc`, and set `main` as
+   the top-level module.
+2. Run Synthesis → Implementation → Generate Bitstream.
+3. Program the Basys3 via Hardware Manager.
+4. Set the mode switches, press `reset`, then `startstop` to run.
 
 ## Known behavior
 
