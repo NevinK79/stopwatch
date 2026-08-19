@@ -3,6 +3,9 @@
 RTL implementation of a four-mode programmable stopwatch/timer on the
 Digilent Basys3 FPGA board.
 
+## Demo
+[![Watch the demo](https://img.youtube.com/vi/Rkqap1vFbTs/0.jpg)](https://youtu.be/Rkqap1vFbTs)
+
 ## Overview
 
 Time is displayed on the board's four 7-segment digits: the two
