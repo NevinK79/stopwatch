@@ -64,4 +64,3 @@ set_property PACKAGE_PIN T18 [get_ports reset]
 
  
 
-
