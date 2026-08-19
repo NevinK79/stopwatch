@@ -29,15 +29,16 @@ output [7:0] sseg,
 output [3:0] an
 );
 
-wire clk_10ms;
-wire clk_1ms;
-clkDiv clock(.clk(clk),.clk_10ms(clk_10ms),.clk_1ms(clk_1ms));
+wire tick_10ms;
+wire tick_1ms;
+clkDiv clock(.clk(clk),.tick_10ms(tick_10ms),.tick_1ms(tick_1ms));
 
 
 
 stopWatchFSM fsm( 
-.clk_10ms(clk_10ms),
-.clk_1ms(clk_1ms),
+.clk(clk),
+.tick_10ms(tick_10ms),
+.tick_1ms(tick_1ms),
 .reset(reset), 
 .startstop(startstop),
 .inTens(sw[9:6]),

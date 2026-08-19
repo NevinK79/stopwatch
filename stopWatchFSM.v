@@ -21,8 +21,9 @@
 
 
 module stopWatchFSM(
-input clk_10ms,
-input clk_1ms,
+input clk,
+input tick_10ms,
+input tick_1ms,
 input reset,
 input startstop,
 input [3:0] inTens,
@@ -43,7 +44,8 @@ reg startStop_prev;
 
 
 
-always @(posedge clk_10ms) begin
+always @(posedge clk) begin
+if(tick_10ms) begin
 startStop_prev <=startstop;
 if ((startstop == 1'b1)&&(startStop_prev==1'b0))
     start <= !(start);
@@ -104,6 +106,7 @@ else if(((sw_mode == 2'b01)||(sw_mode ==2'b11))&&(start == 1'b1)) begin
     end
 end
 end
+end
 
 
 
@@ -111,8 +114,9 @@ end
 
 reg[1:0] select = 2'b00;
 
-always@(posedge clk_1ms) begin
-select <= select+1;
+always@(posedge clk) begin
+if(tick_1ms)
+    select <= select+1;
 end
 reg[3:0] current_bcd;
 reg decimal;

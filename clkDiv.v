@@ -22,26 +22,30 @@
 
 module clkDiv(
 input clk,
-output clk_10ms,
-output clk_1ms
+output reg tick_10ms = 1'b0, tick_1ms = 1'b0
     );
 reg [19:0] MSCOUNT = 20'd999999;
 reg[16:0] MILICOUNT = 17'd99999;
 
-assign clk_10ms = (MSCOUNT<=499999)? 1'b1:1'b0;
-assign clk_1ms = (MILICOUNT<=49999)? 1'b1:1'b0;
-
 always @(posedge clk) begin
-if(MSCOUNT == 0)
+if(MSCOUNT == 0)begin
     MSCOUNT <= 20'd999999;
-else
+    tick_10ms <= 1'b1;
+  end
+else begin
   MSCOUNT <= MSCOUNT-1;
+  tick_10ms <=1'b0;
+  end
 end
 
 always @(posedge clk) begin
-if(MILICOUNT == 0)
+if(MILICOUNT == 0) begin
     MILICOUNT <= 17'd99999;
-else
+    tick_1ms <= 1'b1;
+ end
+else begin
   MILICOUNT <= MILICOUNT-1;
+  tick_1ms <= 1'b0;
+  end
 end
 endmodule
