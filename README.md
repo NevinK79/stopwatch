@@ -112,3 +112,7 @@ file — no synthesis required.
   from the reloaded value.
 - **Changing mode without pressing reset** lets the current count continue
   in the newly selected direction rather than reloading.
+- **7-segment decoder input range** — `hexto7segment` accepts the full 4-bit
+  input range (0–F), not just BCD digits, but the FSM only ever drives it
+  with values 0–9. Inputs above 9 are supported by the hardware but aren't
+  expected to occur during normal operation.
